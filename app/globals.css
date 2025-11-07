@@ -5,29 +5,43 @@
   --foreground: #171717;
 }
 
-/* Josh's Typewriter & Diner Theme */
+/* Josh's Modern Dark Theme - Sophisticated Navy & Gold */
 html.theme-josh {
-  --background: #f5f1e8;
-  --foreground: #2d2317;
-  --primary: #8b6f47;
-  --secondary: #a67c52;
-  --accent: #5c4a3a;
-  --surface: #fefcf7;
-  --border: #d4c4a8;
-  --font-primary: 'Courier Prime', 'Courier New', monospace;
+  --background: #0a0e1a;
+  --background-gradient-from: #0a0e1a;
+  --background-gradient-to: #141b2e;
+  --foreground: #e8edf4;
+  --primary: #d4af37;
+  --primary-hover: #f0c951;
+  --secondary: #1e2740;
+  --accent: #2d3a5c;
+  --surface: #151d30;
+  --surface-glass: rgba(21, 29, 48, 0.6);
+  --border: #2d3a5c;
+  --border-subtle: rgba(45, 58, 92, 0.3);
+  --text-muted: #8b95ab;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-secondary: system-ui, -apple-system, sans-serif;
 }
 
-/* Nini's Quill & Parchment Theme */
+/* Nini's Modern Dark Theme - Elegant Plum & Rose */
 html.theme-nini {
-  --background: #fdf8f0;
-  --foreground: #3a2518;
-  --primary: #8b4049;
-  --secondary: #a65157;
-  --accent: #6b2737;
-  --surface: #fffbf5;
-  --border: #e8d5c4;
-  --font-primary: 'Crimson Text', Georgia, serif;
+  --background: #1a0a14;
+  --background-gradient-from: #1a0a14;
+  --background-gradient-to: #2e1423;
+  --foreground: #f4e8ed;
+  --primary: #d946a6;
+  --primary-hover: #e879c0;
+  --secondary: #3d1e32;
+  --accent: #5c2d4a;
+  --surface: #2d1422;
+  --surface-glass: rgba(45, 20, 34, 0.6);
+  --border: #5c2d4a;
+  --border-subtle: rgba(92, 45, 74, 0.3);
+  --text-muted: #ab8b95;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-secondary: system-ui, -apple-system, sans-serif;
 }
 
@@ -37,10 +51,77 @@ html.theme-nini {
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background-gradient-from) 0%, var(--background-gradient-to) 100%);
   color: var(--foreground);
   font-family: var(--font-primary), Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  min-height: 100vh;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Glassmorphism utility */
+.glass-effect {
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out;
 }
 
 /* Custom Editor Styles */
@@ -79,24 +160,38 @@ body {
 }
 
 [contenteditable] blockquote {
-  border-left: 4px solid var(--border);
+  border-left: 3px solid var(--primary);
   padding-left: 1em;
   margin: 1em 0;
   color: var(--foreground);
-  opacity: 0.7;
+  opacity: 0.8;
   font-style: italic;
+  position: relative;
 }
 
 [contenteditable] hr {
   border: none;
-  border-top: 2px solid var(--border);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
   margin: 2em 0;
 }
 
 [contenteditable] code {
-  background-color: var(--background);
+  background-color: var(--accent);
   padding: 0.2em 0.4em;
-  border-radius: 0.25em;
-  font-family: monospace;
+  border-radius: 0.375em;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
   color: var(--foreground);
+  font-size: 0.9em;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--primary);
+  color: var(--background);
+}
+
+::-moz-selection {
+  background: var(--primary);
+  color: var(--background);
 }
