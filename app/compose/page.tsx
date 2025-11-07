@@ -88,23 +88,23 @@ export default function ComposePage() {
   const recipient = getOtherUser(user.id);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
       <Navigation />
 
       <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="rounded-lg shadow-sm p-6" style={{ background: 'var(--surface)' }}>
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>
               ✍️ Compose a Letter
             </h1>
-            <p className="text-gray-600">
+            <p className="opacity-70" style={{ color: 'var(--foreground)' }}>
               To: <span className="font-semibold">{recipient?.name}</span>
             </p>
           </div>
 
           <form onSubmit={handleSend} className="space-y-6">
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="subject" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                 Subject
               </label>
               <input
@@ -112,30 +112,40 @@ export default function ComposePage() {
                 type="text"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                className="w-full px-4 py-3 rounded-lg outline-none transition"
+                style={{
+                  border: `1px solid var(--border)`,
+                  background: 'var(--surface)',
+                  color: 'var(--foreground)'
+                }}
                 placeholder="Enter the subject of your letter"
                 disabled={sending}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                 Your Letter
               </label>
               <RichTextEditor content={content} onChange={setContent} />
             </div>
 
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              <div className="p-3 border rounded-lg text-sm" style={{
+                background: 'rgba(220, 38, 38, 0.1)',
+                borderColor: 'rgba(220, 38, 38, 0.3)',
+                color: '#991b1b'
+              }}>
                 {error}
               </div>
             )}
 
-            <div className="flex justify-between items-center pt-4 border-t border-gray-200">
+            <div className="flex justify-between items-center pt-4" style={{ borderTop: `1px solid var(--border)` }}>
               <button
                 type="button"
                 onClick={() => router.push('/inbox')}
-                className="px-6 py-3 text-gray-600 hover:text-gray-800 transition"
+                className="px-6 py-3 transition opacity-70 hover:opacity-100"
+                style={{ color: 'var(--foreground)' }}
                 disabled={sending}
               >
                 Cancel
@@ -143,7 +153,11 @@ export default function ComposePage() {
 
               <button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-8 py-3 font-semibold rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  background: 'var(--primary)',
+                  color: 'var(--surface)'
+                }}
                 disabled={sending}
               >
                 {sending ? 'Sending...' : 'Send Letter 💌'}
@@ -152,8 +166,12 @@ export default function ComposePage() {
           </form>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-blue-800">
+        <div className="mt-6 p-4 rounded-lg" style={{
+          background: 'var(--accent)',
+          borderColor: 'var(--border)',
+          opacity: 0.15
+        }}>
+          <p className="text-sm" style={{ color: 'var(--foreground)' }}>
             <span className="font-semibold">💡 Tip:</span> Use the formatting toolbar to make your letter more expressive with bold text, headings, lists, and quotes.
           </p>
         </div>

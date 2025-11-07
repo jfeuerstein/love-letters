@@ -24,17 +24,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl">
+    <div className="flex min-h-screen items-center justify-center" style={{ background: 'var(--background)' }}>
+      <div className="w-full max-w-md p-8 rounded-2xl shadow-xl" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">💌</h1>
-          <h2 className="text-2xl font-semibold text-gray-800">Love Letters</h2>
-          <p className="text-gray-600 mt-2">Send heartfelt messages</p>
+          <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>💌</h1>
+          <h2 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>Love Letters</h2>
+          <p className="mt-2 opacity-70" style={{ color: 'var(--foreground)' }}>Send heartfelt messages</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="username" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Username
             </label>
             <input
@@ -42,14 +42,19 @@ export default function LoginPage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 rounded-lg outline-none transition"
+              style={{
+                border: `1px solid var(--border)`,
+                background: 'var(--surface)',
+                color: 'var(--foreground)'
+              }}
               placeholder="Enter your username"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Password
             </label>
             <input
@@ -57,31 +62,44 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-3 rounded-lg outline-none transition"
+              style={{
+                border: `1px solid var(--border)`,
+                background: 'var(--surface)',
+                color: 'var(--foreground)'
+              }}
               placeholder="Enter your password"
               required
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div className="p-3 border rounded-lg text-sm" style={{
+              background: 'rgba(220, 38, 38, 0.1)',
+              borderColor: 'rgba(220, 38, 38, 0.3)',
+              color: '#991b1b'
+            }}>
               {error}
             </div>
           )}
 
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+            className="w-full py-3 font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
+            style={{
+              background: 'var(--primary)',
+              color: 'var(--surface)'
+            }}
           >
             Sign In
           </button>
         </form>
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <p className="text-xs text-gray-600 text-center mb-2 font-semibold">Demo Accounts:</p>
-          <div className="text-xs text-gray-600 space-y-1">
-            <p><span className="font-medium">User 1:</span> alex / password1</p>
-            <p><span className="font-medium">User 2:</span> jordan / password2</p>
+        <div className="mt-8 p-4 rounded-lg" style={{ background: 'var(--background)', borderColor: 'var(--border)' }}>
+          <p className="text-xs text-center mb-2 font-semibold opacity-70" style={{ color: 'var(--foreground)' }}>Demo Accounts:</p>
+          <div className="text-xs space-y-1 opacity-70" style={{ color: 'var(--foreground)' }}>
+            <p><span className="font-medium">Josh:</span> josh / password1</p>
+            <p><span className="font-medium">Nini:</span> nini / password2</p>
           </div>
         </div>
       </div>

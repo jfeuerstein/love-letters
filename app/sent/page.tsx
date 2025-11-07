@@ -63,22 +63,22 @@ export default function SentPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
       <Navigation />
 
       <div className="max-w-6xl mx-auto p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Letters List */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm">
-              <div className="p-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-800">Sent Letters</h2>
-                <p className="text-sm text-gray-600">{letters.length} letters</p>
+            <div className="rounded-lg shadow-sm" style={{ background: 'var(--surface)' }}>
+              <div className="p-4" style={{ borderBottom: `1px solid var(--border)` }}>
+                <h2 className="text-lg font-semibold" style={{ color: 'var(--foreground)' }}>Sent Letters</h2>
+                <p className="text-sm opacity-70" style={{ color: 'var(--foreground)' }}>{letters.length} letters</p>
               </div>
 
-              <div className="divide-y divide-gray-200">
+              <div style={{ borderTop: `1px solid var(--border)` }}>
                 {letters.length === 0 ? (
-                  <div className="p-8 text-center text-gray-500">
+                  <div className="p-8 text-center opacity-60" style={{ color: 'var(--foreground)' }}>
                     <div className="text-4xl mb-2">📭</div>
                     <p>No sent letters yet</p>
                   </div>
@@ -87,24 +87,28 @@ export default function SentPage() {
                     <button
                       key={letter.id}
                       onClick={() => handleLetterClick(letter)}
-                      className={`w-full text-left p-4 hover:bg-gray-50 transition ${
-                        selectedLetter?.id === letter.id ? 'bg-purple-50' : ''
-                      }`}
+                      className="w-full text-left p-4 transition"
+                      style={{
+                        borderBottom: `1px solid var(--border)`,
+                        background: selectedLetter?.id === letter.id ? 'var(--primary)' : 'var(--surface)',
+                        color: selectedLetter?.id === letter.id ? 'var(--surface)' : 'var(--foreground)',
+                        opacity: selectedLetter?.id === letter.id ? 0.9 : 1
+                      }}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-gray-800 truncate">
+                          <p className="font-semibold truncate">
                             {letter.subject}
                           </p>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm opacity-80">
                             To: {getRecipientName(letter.to)}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs opacity-60 mt-1">
                             {formatDate(letter.timestamp)}
                           </p>
                         </div>
                         {letter.read && (
-                          <span className="ml-2 text-xs text-green-600 flex-shrink-0 mt-2">
+                          <span className="ml-2 text-xs flex-shrink-0 mt-2 opacity-80">
                             ✓ Read
                           </span>
                         )}
@@ -119,12 +123,12 @@ export default function SentPage() {
           {/* Letter Content */}
           <div className="lg:col-span-2">
             {selectedLetter ? (
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <h1 className="text-2xl font-bold text-gray-800 mb-2">
+              <div className="rounded-lg shadow-sm p-6" style={{ background: 'var(--surface)' }}>
+                <div className="pb-4 mb-6" style={{ borderBottom: `1px solid var(--border)` }}>
+                  <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>
                     {selectedLetter.subject}
                   </h1>
-                  <div className="flex items-center justify-between text-sm text-gray-600">
+                  <div className="flex items-center justify-between text-sm opacity-70" style={{ color: 'var(--foreground)' }}>
                     <span>To: {getRecipientName(selectedLetter.to)}</span>
                     <span>{formatDate(selectedLetter.timestamp)}</span>
                   </div>
@@ -132,11 +136,12 @@ export default function SentPage() {
 
                 <div
                   className="prose prose-lg max-w-none"
+                  style={{ color: 'var(--foreground)' }}
                   dangerouslySetInnerHTML={{ __html: selectedLetter.content }}
                 />
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-sm p-12 flex flex-col items-center justify-center text-gray-500">
+              <div className="rounded-lg shadow-sm p-12 flex flex-col items-center justify-center opacity-60" style={{ background: 'var(--surface)', color: 'var(--foreground)' }}>
                 <div className="text-6xl mb-4">📤</div>
                 <p className="text-lg">Select a letter to view</p>
               </div>
