@@ -55,7 +55,15 @@ export default function SentPage() {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-6xl animate-pulse">💌</div>
+        <div className="w-24 h-24 rounded-full flex items-center justify-center animate-pulse" style={{
+          background: 'var(--surface-glass)',
+          border: '2px solid var(--border)',
+          boxShadow: '0 0 40px var(--primary)'
+        }}>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--primary)' }}>
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </div>
       </div>
     );
   }
@@ -63,54 +71,73 @@ export default function SentPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+    <div className="min-h-screen">
       <Navigation />
 
-      <div className="max-w-6xl mx-auto p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Letters List */}
-          <div className="lg:col-span-1">
-            <div className="rounded-lg shadow-sm" style={{ background: 'var(--surface)' }}>
-              <div className="p-4" style={{ borderBottom: `1px solid var(--border)` }}>
-                <h2 className="text-lg font-semibold" style={{ color: 'var(--foreground)' }}>Sent Letters</h2>
-                <p className="text-sm opacity-70" style={{ color: 'var(--foreground)' }}>{letters.length} letters</p>
+          <div className="lg:col-span-1 animate-slide-in">
+            <div className="rounded-2xl shadow-xl glass-effect overflow-hidden" style={{ border: `1px solid var(--border)` }}>
+              <div className="p-6" style={{
+                borderBottom: `1px solid var(--border)`,
+                background: 'var(--surface)'
+              }}>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>Sent Letters</h2>
+                <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{letters.length} {letters.length === 1 ? 'letter' : 'letters'}</p>
               </div>
 
-              <div style={{ borderTop: `1px solid var(--border)` }}>
+              <div className="max-h-[600px] overflow-y-auto">
                 {letters.length === 0 ? (
-                  <div className="p-8 text-center opacity-60" style={{ color: 'var(--foreground)' }}>
-                    <div className="text-4xl mb-2">📭</div>
-                    <p>No sent letters yet</p>
+                  <div className="p-12 text-center" style={{ color: 'var(--text-muted)' }}>
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto mb-4 opacity-30">
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                    <p className="font-medium">No sent letters yet</p>
                   </div>
                 ) : (
-                  letters.map((letter) => (
+                  letters.map((letter, index) => (
                     <button
                       key={letter.id}
                       onClick={() => handleLetterClick(letter)}
-                      className="w-full text-left p-4 transition"
+                      className="w-full text-left p-5 transition-all duration-300 hover:scale-[1.02] relative group"
                       style={{
-                        borderBottom: `1px solid var(--border)`,
-                        background: selectedLetter?.id === letter.id ? 'var(--primary)' : 'var(--surface)',
-                        color: selectedLetter?.id === letter.id ? 'var(--surface)' : 'var(--foreground)',
-                        opacity: selectedLetter?.id === letter.id ? 0.9 : 1
+                        borderBottom: index < letters.length - 1 ? `1px solid var(--border-subtle)` : 'none',
+                        background: selectedLetter?.id === letter.id
+                          ? 'var(--primary)'
+                          : 'transparent',
+                        color: selectedLetter?.id === letter.id
+                          ? 'var(--background)'
+                          : 'var(--foreground)'
                       }}
                     >
-                      <div className="flex items-start justify-between">
+                      {selectedLetter?.id === letter.id && (
+                        <div className="absolute inset-0" style={{
+                          background: 'var(--primary)',
+                          boxShadow: '0 0 20px var(--primary)',
+                          borderRadius: '0.5rem',
+                          margin: '0.25rem'
+                        }}></div>
+                      )}
+                      <div className="flex items-start justify-between relative z-10">
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold truncate">
+                          <p className="font-bold truncate text-base mb-1">
                             {letter.subject}
                           </p>
                           <p className="text-sm opacity-80">
                             To: {getRecipientName(letter.to)}
                           </p>
-                          <p className="text-xs opacity-60 mt-1">
+                          <p className="text-xs opacity-60 mt-2">
                             {formatDate(letter.timestamp)}
                           </p>
                         </div>
                         {letter.read && (
-                          <span className="ml-2 text-xs flex-shrink-0 mt-2 opacity-80">
-                            ✓ Read
-                          </span>
+                          <div className="flex items-center space-x-2 ml-3">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          </div>
                         )}
                       </div>
                     </button>
@@ -121,29 +148,35 @@ export default function SentPage() {
           </div>
 
           {/* Letter Content */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 animate-fade-in">
             {selectedLetter ? (
-              <div className="rounded-lg shadow-sm p-6" style={{ background: 'var(--surface)' }}>
-                <div className="pb-4 mb-6" style={{ borderBottom: `1px solid var(--border)` }}>
-                  <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>
+              <div className="rounded-2xl shadow-xl glass-effect p-8" style={{ border: `1px solid var(--border)` }}>
+                <div className="pb-6 mb-8" style={{ borderBottom: `2px solid var(--border)` }}>
+                  <h1 className="text-3xl font-bold mb-3" style={{ color: 'var(--foreground)' }}>
                     {selectedLetter.subject}
                   </h1>
-                  <div className="flex items-center justify-between text-sm opacity-70" style={{ color: 'var(--foreground)' }}>
-                    <span>To: {getRecipientName(selectedLetter.to)}</span>
+                  <div className="flex items-center justify-between text-sm" style={{ color: 'var(--text-muted)' }}>
+                    <span className="font-medium">To: <span style={{ color: 'var(--primary)' }}>{getRecipientName(selectedLetter.to)}</span></span>
                     <span>{formatDate(selectedLetter.timestamp)}</span>
                   </div>
                 </div>
 
                 <div
-                  className="prose prose-lg max-w-none"
+                  className="prose prose-lg max-w-none leading-relaxed"
                   style={{ color: 'var(--foreground)' }}
                   dangerouslySetInnerHTML={{ __html: selectedLetter.content }}
                 />
               </div>
             ) : (
-              <div className="rounded-lg shadow-sm p-12 flex flex-col items-center justify-center opacity-60" style={{ background: 'var(--surface)', color: 'var(--foreground)' }}>
-                <div className="text-6xl mb-4">📤</div>
-                <p className="text-lg">Select a letter to view</p>
+              <div className="rounded-2xl shadow-xl glass-effect p-16 flex flex-col items-center justify-center min-h-[500px]" style={{
+                border: `1px solid var(--border)`,
+                color: 'var(--text-muted)'
+              }}>
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mb-6 opacity-30">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+                <p className="text-lg font-medium">Select a letter to view</p>
               </div>
             )}
           </div>

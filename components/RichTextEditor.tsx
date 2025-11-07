@@ -75,11 +75,11 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         onClick();
       }}
       title={title}
-      className="px-3 py-1.5 rounded transition hover:opacity-80"
+      className="px-3 py-2 rounded-lg transition-all duration-200 hover:scale-105 font-medium"
       style={{
-        background: 'var(--surface)',
+        background: 'var(--accent)',
         color: 'var(--foreground)',
-        border: `1px solid var(--border)`
+        border: `1px solid var(--border-subtle)`
       }}
       type="button"
     >
@@ -88,73 +88,71 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   );
 
   return (
-    <div className="rounded-lg overflow-hidden" style={{
-      border: `1px solid var(--border)`,
-      background: 'var(--surface)'
+    <div className="rounded-xl overflow-hidden glass-effect shadow-xl" style={{
+      border: `1px solid var(--border)`
     }}>
-      <div className="p-2 flex flex-wrap gap-2" style={{
+      <div className="p-3 flex flex-wrap gap-2" style={{
         borderBottom: `1px solid var(--border)`,
-        background: 'var(--background)',
-        opacity: 0.6
+        background: 'var(--surface)'
       }}>
         <Button onClick={() => execCommand('bold')} title="Bold">
-          <span className="font-bold">B</span>
+          <span className="font-bold text-sm">B</span>
         </Button>
 
         <Button onClick={() => execCommand('italic')} title="Italic">
-          <span className="italic">I</span>
+          <span className="italic text-sm">I</span>
         </Button>
 
         <Button onClick={() => execCommand('strikethrough')} title="Strikethrough">
-          <span className="line-through">S</span>
+          <span className="line-through text-sm">S</span>
         </Button>
 
         <Button onClick={() => execCommand('underline')} title="Underline">
-          <span className="underline">U</span>
+          <span className="underline text-sm">U</span>
         </Button>
 
-        <div className="w-px bg-gray-300 mx-1"></div>
+        <div className="w-px mx-1" style={{ background: 'var(--border)' }}></div>
 
         <Button onClick={() => insertHeading(1)} title="Heading 1">
-          H1
+          <span className="text-sm font-bold">H1</span>
         </Button>
 
         <Button onClick={() => insertHeading(2)} title="Heading 2">
-          H2
+          <span className="text-sm font-bold">H2</span>
         </Button>
 
         <Button onClick={() => insertHeading(3)} title="Heading 3">
-          H3
+          <span className="text-sm font-bold">H3</span>
         </Button>
 
-        <div className="w-px bg-gray-300 mx-1"></div>
+        <div className="w-px mx-1" style={{ background: 'var(--border)' }}></div>
 
         <Button onClick={() => execCommand('insertUnorderedList')} title="Bullet List">
-          • List
+          <span className="text-sm">• List</span>
         </Button>
 
         <Button onClick={() => execCommand('insertOrderedList')} title="Numbered List">
-          1. List
+          <span className="text-sm">1. List</span>
         </Button>
 
         <Button onClick={() => execCommand('formatBlock', '<blockquote>')} title="Quote">
-          &quot;
+          <span className="text-sm">&quot;</span>
         </Button>
 
-        <div className="w-px bg-gray-300 mx-1"></div>
+        <div className="w-px mx-1" style={{ background: 'var(--border)' }}></div>
 
         <Button onClick={insertHorizontalRule} title="Horizontal Rule">
-          —
+          <span className="text-sm">—</span>
         </Button>
 
-        <div className="w-px bg-gray-300 mx-1"></div>
+        <div className="w-px mx-1" style={{ background: 'var(--border)' }}></div>
 
         <Button onClick={() => execCommand('undo')} title="Undo">
-          ↶
+          <span className="text-sm">↶</span>
         </Button>
 
         <Button onClick={() => execCommand('redo')} title="Redo">
-          ↷
+          <span className="text-sm">↷</span>
         </Button>
       </div>
 
@@ -162,7 +160,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         ref={editorRef}
         contentEditable
         onInput={handleInput}
-        className="prose prose-lg max-w-none focus:outline-none min-h-[400px] p-4"
+        className="prose prose-lg max-w-none focus:outline-none min-h-[400px] p-6 transition-all"
         style={{
           color: 'var(--foreground)',
           background: 'var(--surface)'
