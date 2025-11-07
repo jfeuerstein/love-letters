@@ -5,24 +5,42 @@
   --foreground: #171717;
 }
 
+/* Josh's Typewriter & Diner Theme */
+html.theme-josh {
+  --background: #f5f1e8;
+  --foreground: #2d2317;
+  --primary: #8b6f47;
+  --secondary: #a67c52;
+  --accent: #5c4a3a;
+  --surface: #fefcf7;
+  --border: #d4c4a8;
+  --font-primary: 'Courier Prime', 'Courier New', monospace;
+  --font-secondary: system-ui, -apple-system, sans-serif;
+}
+
+/* Nini's Quill & Parchment Theme */
+html.theme-nini {
+  --background: #fdf8f0;
+  --foreground: #3a2518;
+  --primary: #8b4049;
+  --secondary: #a65157;
+  --accent: #6b2737;
+  --surface: #fffbf5;
+  --border: #e8d5c4;
+  --font-primary: 'Crimson Text', Georgia, serif;
+  --font-secondary: system-ui, -apple-system, sans-serif;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-primary), Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom Editor Styles */
@@ -61,22 +79,24 @@ body {
 }
 
 [contenteditable] blockquote {
-  border-left: 4px solid #e5e7eb;
+  border-left: 4px solid var(--border);
   padding-left: 1em;
   margin: 1em 0;
-  color: #6b7280;
+  color: var(--foreground);
+  opacity: 0.7;
   font-style: italic;
 }
 
 [contenteditable] hr {
   border: none;
-  border-top: 2px solid #e5e7eb;
+  border-top: 2px solid var(--border);
   margin: 2em 0;
 }
 
 [contenteditable] code {
-  background-color: #f3f4f6;
+  background-color: var(--background);
   padding: 0.2em 0.4em;
   border-radius: 0.25em;
   font-family: monospace;
+  color: var(--foreground);
 }

@@ -75,7 +75,12 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         onClick();
       }}
       title={title}
-      className="px-3 py-1.5 rounded transition bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+      className="px-3 py-1.5 rounded transition hover:opacity-80"
+      style={{
+        background: 'var(--surface)',
+        color: 'var(--foreground)',
+        border: `1px solid var(--border)`
+      }}
       type="button"
     >
       {children}
@@ -83,8 +88,15 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   );
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden bg-white">
-      <div className="border-b border-gray-300 bg-gray-50 p-2 flex flex-wrap gap-2">
+    <div className="rounded-lg overflow-hidden" style={{
+      border: `1px solid var(--border)`,
+      background: 'var(--surface)'
+    }}>
+      <div className="p-2 flex flex-wrap gap-2" style={{
+        borderBottom: `1px solid var(--border)`,
+        background: 'var(--background)',
+        opacity: 0.6
+      }}>
         <Button onClick={() => execCommand('bold')} title="Bold">
           <span className="font-bold">B</span>
         </Button>
@@ -151,6 +163,10 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         contentEditable
         onInput={handleInput}
         className="prose prose-lg max-w-none focus:outline-none min-h-[400px] p-4"
+        style={{
+          color: 'var(--foreground)',
+          background: 'var(--surface)'
+        }}
         suppressContentEditableWarning
       />
     </div>
