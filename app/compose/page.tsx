@@ -31,7 +31,13 @@ export default function ComposePage() {
       return;
     }
 
-    if (!content.trim() || content === '<p></p>') {
+    const isEmpty = !content.trim() ||
+      content === '<p></p>' ||
+      content === '<br>' ||
+      content === '<div><br></div>' ||
+      content.replace(/<[^>]*>/g, '').trim() === '';
+
+    if (isEmpty) {
       setError('Please write your letter');
       return;
     }
