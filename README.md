@@ -5,8 +5,8 @@ A Next.js application for two users to exchange heartfelt letters with a rich te
 ## Features
 
 - **Two-User Authentication**: Simple login system for two accounts
-- **Rich Text Editor**: Full-featured editor with formatting options including:
-  - Bold, italic, and strikethrough text
+- **Rich Text Editor**: Custom, lightweight editor with formatting options including:
+  - Bold, italic, strikethrough, and underline text
   - Headings (H1, H2, H3)
   - Bullet and numbered lists
   - Blockquotes
@@ -58,7 +58,7 @@ The application comes with two pre-configured accounts:
 - **Framework**: Next.js 16 with React 19
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS 4
-- **Rich Text Editor**: Tiptap
+- **Rich Text Editor**: Custom contentEditable-based editor
 - **Storage**: LocalStorage (client-side)
 - **Authentication**: Cookie-based with js-cookie
 

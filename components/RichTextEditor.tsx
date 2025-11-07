@@ -1,10 +1,6 @@
 'use client';
 
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import TextStyle from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-color';
-import { useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 
 interface RichTextEditorProps {
   content: string;
@@ -12,52 +8,74 @@ interface RichTextEditorProps {
 }
 
 export default function RichTextEditor({ content, onChange }: RichTextEditorProps) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextStyle,
-      Color,
-    ],
-    content,
-    editorProps: {
-      attributes: {
-        class: 'prose prose-lg max-w-none focus:outline-none min-h-[400px] p-4',
-      },
-    },
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
-  });
+  const editorRef = useRef<HTMLDivElement>(null);
+  const isUpdatingRef = useRef(false);
 
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content);
+    if (editorRef.current && content !== editorRef.current.innerHTML && !isUpdatingRef.current) {
+      editorRef.current.innerHTML = content;
     }
-  }, [content, editor]);
+  }, [content]);
 
-  if (!editor) {
-    return null;
-  }
+  const handleInput = useCallback(() => {
+    if (editorRef.current) {
+      isUpdatingRef.current = true;
+      onChange(editorRef.current.innerHTML);
+      setTimeout(() => {
+        isUpdatingRef.current = false;
+      }, 0);
+    }
+  }, [onChange]);
+
+  const execCommand = useCallback((command: string, value?: string) => {
+    document.execCommand(command, false, value);
+    editorRef.current?.focus();
+    handleInput();
+  }, [handleInput]);
+
+  const insertHeading = useCallback((level: number) => {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+    const node = range.commonAncestorContainer;
+    const blockElement = node.nodeType === Node.TEXT_NODE ? node.parentElement : node as HTMLElement;
+
+    if (blockElement) {
+      const heading = document.createElement(`h${level}`);
+      heading.innerHTML = blockElement.innerHTML || '<br>';
+      blockElement.replaceWith(heading);
+
+      const newRange = document.createRange();
+      newRange.selectNodeContents(heading);
+      newRange.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+    }
+
+    handleInput();
+  }, [handleInput]);
+
+  const insertHorizontalRule = useCallback(() => {
+    execCommand('insertHorizontalRule');
+  }, [execCommand]);
 
   const Button = ({
     onClick,
-    active,
     children,
-    disabled
+    title,
   }: {
     onClick: () => void;
-    active?: boolean;
     children: React.ReactNode;
-    disabled?: boolean;
+    title?: string;
   }) => (
     <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`px-3 py-1.5 rounded transition ${
-        active
-          ? 'bg-purple-600 text-white'
-          : 'bg-white text-gray-700 hover:bg-gray-100'
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''} border border-gray-300`}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+      title={title}
+      className="px-3 py-1.5 rounded transition bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
       type="button"
     >
       {children}
@@ -66,102 +84,75 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden bg-white">
-      {/* Toolbar */}
       <div className="border-b border-gray-300 bg-gray-50 p-2 flex flex-wrap gap-2">
-        <Button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          active={editor.isActive('bold')}
-        >
+        <Button onClick={() => execCommand('bold')} title="Bold">
           <span className="font-bold">B</span>
         </Button>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          active={editor.isActive('italic')}
-        >
+        <Button onClick={() => execCommand('italic')} title="Italic">
           <span className="italic">I</span>
         </Button>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          active={editor.isActive('strike')}
-        >
+        <Button onClick={() => execCommand('strikethrough')} title="Strikethrough">
           <span className="line-through">S</span>
+        </Button>
+
+        <Button onClick={() => execCommand('underline')} title="Underline">
+          <span className="underline">U</span>
         </Button>
 
         <div className="w-px bg-gray-300 mx-1"></div>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          active={editor.isActive('heading', { level: 1 })}
-        >
+        <Button onClick={() => insertHeading(1)} title="Heading 1">
           H1
         </Button>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          active={editor.isActive('heading', { level: 2 })}
-        >
+        <Button onClick={() => insertHeading(2)} title="Heading 2">
           H2
         </Button>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          active={editor.isActive('heading', { level: 3 })}
-        >
+        <Button onClick={() => insertHeading(3)} title="Heading 3">
           H3
         </Button>
 
         <div className="w-px bg-gray-300 mx-1"></div>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          active={editor.isActive('bulletList')}
-        >
+        <Button onClick={() => execCommand('insertUnorderedList')} title="Bullet List">
           • List
         </Button>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          active={editor.isActive('orderedList')}
-        >
+        <Button onClick={() => execCommand('insertOrderedList')} title="Numbered List">
           1. List
         </Button>
 
-        <Button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          active={editor.isActive('blockquote')}
-        >
+        <Button onClick={() => execCommand('formatBlock', '<blockquote>')} title="Quote">
           &quot;
         </Button>
 
         <div className="w-px bg-gray-300 mx-1"></div>
 
-        <Button
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-        >
+        <Button onClick={insertHorizontalRule} title="Horizontal Rule">
           —
         </Button>
 
         <div className="w-px bg-gray-300 mx-1"></div>
 
-        <Button
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-        >
+        <Button onClick={() => execCommand('undo')} title="Undo">
           ↶
         </Button>
 
-        <Button
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-        >
+        <Button onClick={() => execCommand('redo')} title="Redo">
           ↷
         </Button>
       </div>
 
-      {/* Editor Content */}
-      <EditorContent editor={editor} />
+      <div
+        ref={editorRef}
+        contentEditable
+        onInput={handleInput}
+        className="prose prose-lg max-w-none focus:outline-none min-h-[400px] p-4"
+        suppressContentEditableWarning
+      />
     </div>
   );
 }
