@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💌 Love Letters
+
+A Next.js application for two users to exchange heartfelt letters with a rich text editor.
+
+## Features
+
+- **Two-User Authentication**: Simple login system for two accounts
+- **Rich Text Editor**: Full-featured editor with formatting options including:
+  - Bold, italic, and strikethrough text
+  - Headings (H1, H2, H3)
+  - Bullet and numbered lists
+  - Blockquotes
+  - Horizontal rules
+  - Undo/Redo functionality
+- **Inbox**: View all letters received from the other user
+- **Sent Letters**: Review all letters you've sent
+- **Letter Composition**: Easy-to-use interface for writing and sending letters
+- **Read Status Tracking**: See which letters have been read
 
 ## Getting Started
 
-First, run the development server:
+### Installation
+
+```bash
+npm install
+```
+
+### Running the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## User Accounts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application comes with two pre-configured accounts:
 
-## Learn More
+**User 1:**
+- Username: `alex`
+- Password: `password1`
 
-To learn more about Next.js, take a look at the following resources:
+**User 2:**
+- Username: `jordan`
+- Password: `password2`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How to Use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Login**: Visit the home page and log in with one of the user accounts
+2. **Compose**: Click "Compose" to write a new letter using the rich text editor
+3. **Send**: Fill in the subject and content, then click "Send Letter"
+4. **Inbox**: View received letters in the Inbox
+5. **Sent**: Review letters you've sent in the Sent section
 
-## Deploy on Vercel
+## Technology Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Framework**: Next.js 16 with React 19
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **Rich Text Editor**: Tiptap
+- **Storage**: LocalStorage (client-side)
+- **Authentication**: Cookie-based with js-cookie
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+love-letters/
+├── app/
+│   ├── compose/          # Letter composition page
+│   ├── inbox/            # Inbox page
+│   ├── login/            # Login page
+│   ├── sent/             # Sent letters page
+│   └── page.tsx          # Home page (redirects)
+├── components/
+│   ├── Navigation.tsx    # Navigation bar
+│   └── RichTextEditor.tsx # Rich text editor component
+├── hooks/
+│   └── useAuth.ts        # Authentication hook
+└── lib/
+    ├── auth.ts           # Authentication utilities
+    ├── storage.ts        # LocalStorage utilities
+    └── types.ts          # TypeScript type definitions
+```
+
+## Notes
+
+- All letters are stored in the browser's LocalStorage
+- Data persists between sessions but is browser-specific
+- Each user can only see their own inbox and sent letters
+- Letters are automatically marked as read when opened
+
+## Building for Production
+
+```bash
+npm run build
+npm start
+```
