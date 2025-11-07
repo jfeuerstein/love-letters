@@ -18,14 +18,14 @@ export interface Letter {
 export const USERS: User[] = [
   {
     id: "user1",
-    username: "alex",
+    username: "josh",
     password: "password1",
-    name: "Alex"
+    name: "Josh"
   },
   {
     id: "user2",
-    username: "jordan",
+    username: "nini",
     password: "password2",
-    name: "Jordan"
+    name: "Nini"
   }
 ];

@@ -38,11 +38,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 The application comes with two pre-configured accounts:
 
 **User 1:**
-- Username: `alex`
+- Username: `josh`
 - Password: `password1`
 
 **User 2:**
-- Username: `jordan`
+- Username: `nini`
 - Password: `password2`
 
 ## How to Use
